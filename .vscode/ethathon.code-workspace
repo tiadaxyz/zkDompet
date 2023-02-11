@@ -1,0 +1,49 @@
+{
+  "folders": [
+    {
+      "name": "_ROOT",
+      "path": "../"
+    },
+    {
+      "name": "Frontend",
+      "path": "../packages/frontend"
+    },
+    {
+      "name": "Contracts",
+      "path": "../packages/contracts"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules/": true,
+      "**/pnpm-lock.yaml": true,
+      "**/.turbo": true,
+      "**/.next": true,
+      "**/.vercel": true
+    },
+    "search.exclude": {
+      "**/packages/contracts/deployments": true
+    },
+    "search.useIgnoreFiles": true,
+    "search.useGlobalIgnoreFiles": true,
+    "search.useParentIgnoreFiles": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true,
+      "source.fixAll.eslint": true
+    },
+    "files.associations": {
+      ".env.*": "dotenv"
+    },
+    "peacock.color": "#00f5d4",
+    "workbench.colorCustomizations": {
+      "sash.hoverBorder": "#29ffe2",
+      "statusBar.background": "#00f5d4",
+      "statusBar.foreground": "#15202b",
+      "statusBarItem.hoverBackground": "#00c2a8",
+      "statusBarItem.remoteBackground": "#00f5d4",
+      "statusBarItem.remoteForeground": "#15202b"
+    }
+  }
+}

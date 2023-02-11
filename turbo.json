@@ -1,0 +1,44 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "start": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "//#lint": {
+      "outputs": []
+    },
+    "lint:fix": {},
+    "//#lint:fix": {}
+  },
+  "globalDependencies": [
+    ".env",
+    ".env.local",
+    "tsconfig.json",
+    ".eslintrc.json",
+    ".prettierrc.js",
+    ".solhint.json"
+  ],
+  "globalEnv": [
+    "NEXT_PUBLIC_PRODUCTION_MODE",
+    "NEXT_PUBLIC_URL",
+    "NEXT_PUBLIC_DEFAULT_CHAIN",
+    "NEXT_PUBLIC_SUPPORTED_CHAINS",
+    "NEXT_PUBLIC_RPC_1337",
+    "NEXT_PUBLIC_RPC_1",
+    "NEXT_PUBLIC_RPC_5",
+    "NEXT_PUBLIC_RPC_137",
+    "NEXT_PUBLIC_RPC_80001"
+  ]
+}
