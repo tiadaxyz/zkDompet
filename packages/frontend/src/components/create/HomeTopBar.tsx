@@ -4,8 +4,8 @@ import { HiOutlineExternalLink } from 'react-icons/hi'
 import 'twin.macro'
 
 export const HomeTopBar: FC = () => {
-  const title = 'ETH KL Mini Hack'
-  const desc = 'ZK Dumpet v0'
+  const title = 'INK!athon'
+  const desc = 'Substrate-based DApp Boilerplate'
   const href = 'https://inkathon.xyz'
 
   return (
