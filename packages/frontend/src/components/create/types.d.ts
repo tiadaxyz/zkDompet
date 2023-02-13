@@ -45,9 +45,17 @@ export interface WalletContextValue {
 export interface SetNameStepProps {
   handleInput: (...arg: any[]) => void
   walletData: WalletContextValue
+  step: number
 }
 
 export interface OwnerPolicyProps {
   handleInput: (...arg: any[]) => void
   walletData: WalletContextValue
+  step: number
+}
+
+export interface ReviewStepProps {
+  handleInput: (...arg: any[]) => void
+  walletData: WalletContextValue
+  step: number
 }

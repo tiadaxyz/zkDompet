@@ -5,7 +5,7 @@ import { NamedAddress, WalletContextValue } from './types'
 import type { primary } from '@constants/colors'
 import 'twin.macro'
 import { useRouter } from 'next/router'
-import { Button, Container, Grid } from '@chakra-ui/react'
+import { Button, Container, Flex, Grid, Progress } from '@chakra-ui/react'
 import { SetNameStep } from './SetNameStep'
 import { OwnerPolicyStep } from './OwnerPolicyStep'
 import { ReviewStep } from './ReviewStep'
@@ -34,18 +34,21 @@ export const CreateWallet: FC = () => {
   const StepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <SetNameStep handleInput={handleInput} walletData={wallet} />
+        return <SetNameStep handleInput={handleInput} walletData={wallet} step={step} />
       case 1:
-        return <OwnerPolicyStep handleInput={handleInput} walletData={wallet} />
+        return <OwnerPolicyStep handleInput={handleInput} walletData={wallet} step={step} />
       case 2:
-        return <ReviewStep handleInput={handleInput} walletData={wallet} />
+        return <ReviewStep handleInput={handleInput} walletData={wallet} step={step} />
       case 3:
-        return <StatusStep handleInput={handleInput} walletData={wallet} />
+        return <StatusStep />
     }
   }
   return (
-    <div>
-      <BaseLayout>{StepContent(step)}</BaseLayout>
-    </div>
+    <>
+      <Flex gap={3} width="70%" flexDirection="column" justifyContent="center">
+        <Progress colorScheme="green" size="sm" value={step * 25 + 25} />
+        {StepContent(step)}
+      </Flex>
+    </>
   )
 }

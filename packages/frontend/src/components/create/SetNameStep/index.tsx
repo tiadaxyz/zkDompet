@@ -1,11 +1,12 @@
-import { Button, Input, Select } from '@chakra-ui/react'
+import { Box, Button, Flex, HStack, Input, Select, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import { FC, useState } from 'react'
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import 'twin.macro'
 import { SetNameStepProps, WalletContextValue } from '../types'
 
-export const SetNameStep = ({ handleInput, walletData }: SetNameStepProps) => {
+export const SetNameStep = ({ handleInput, walletData, step }: SetNameStepProps) => {
+  const Title = 'Set Name and select network your ZK Dompet'
   const [walletInput, setWalletInput] = useState<WalletContextValue>({
     name: walletData.name,
     network: walletData.network,
@@ -27,7 +28,21 @@ export const SetNameStep = ({ handleInput, walletData }: SetNameStepProps) => {
 
   return (
     <>
-      <div>SetNameStep</div>
+      <HStack>
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="full"
+          background="white"
+          width="25px"
+          color="black"
+          as="b"
+        >
+          {step + 1}
+        </Flex>
+        <Text as="b">{Title}</Text>
+      </HStack>
+
       <Input
         value={walletInput.name}
         variant="filled"
