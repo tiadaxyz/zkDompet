@@ -7,6 +7,7 @@ import { useAccount } from 'wagmi'
 import { FC, useEffect } from 'react'
 import 'twin.macro'
 import { useRouter } from 'next/router'
+import { Button } from '@chakra-ui/react'
 
 export const NewWallet: FC = () => {
   const { isConnected } = useAccount()
@@ -26,7 +27,7 @@ export const NewWallet: FC = () => {
         <h1>{title}</h1>
         <p>{desc}</p>
         <ConnectButton />
-        <button onClick={onClick}>Create ZK Dumpet</button>
+        {isConnected && <Button onClick={onClick}>Create ZK Dumpet</Button>}
       </div>
     </>
   )

@@ -1,4 +1,4 @@
-import type { BigNumber } from 'ethers'
+import type { BigNumber, Wallet } from 'ethers'
 
 export type NamedAddress = {
   name: string
@@ -29,3 +29,25 @@ export type PendingSafeData = SafeFormData & {
 }
 
 export type PendingSafeByChain = Record<string, PendingSafeData | undefined>
+
+export interface Owner {
+  name: string
+  address: string
+}
+
+export interface WalletContextValue {
+  name: string
+  network: string
+  owners: Owner[]
+  threshold: number
+}
+
+export interface SetNameStepProps {
+  handleInput: (...arg: any[]) => void
+  walletData: WalletContextValue
+}
+
+export interface OwnerPolicyProps {
+  handleInput: (...arg: any[]) => void
+  walletData: WalletContextValue
+}
