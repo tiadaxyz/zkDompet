@@ -1,183 +1,40 @@
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import { NamedAddress } from './types'
 import type { primary } from '@constants/colors'
 import 'twin.macro'
 import { useRouter } from 'next/router'
-
-// export type NewSafeFormData = {
-//   name: string
-//   threshold: number
-//   owners: NamedAddress[]
-//   saltNonce: number
-//   safeAddress?: string
-// }
-
-// const staticHints: Record<
-//   number,
-//   { title: string; variant:primar ; steps: { title: string; text: string | ReactElement }[] }
-// > = {
-//   1: {
-//     title: 'Safe creation',
-//     variant: 'info',
-//     steps: [
-//       {
-//         title: 'Network fee',
-//         text: 'Deploying your Safe requires the payment of the associated network fee with your connected wallet. An estimation will be provided in the last step.',
-//       },
-//       {
-//         title: 'Address book privacy',
-//         text: 'The name of your Safe will be stored in a local address book on your device and can be changed at a later stage. It will not be shared with us or any third party.',
-//       },
-//     ],
-//   },
-//   2: {
-//     title: 'Safe creation',
-//     variant: 'info',
-//     steps: [
-//       {
-//         title: 'Flat hierarchy',
-//         text: 'Every owner has the same rights within the Safe and can propose, sign and execute transactions that have the required confirmations.',
-//       },
-//       {
-//         title: 'Managing Owners',
-//         text: 'You can always change the number of owners and required confirmations in your Safe after creation.',
-//       },
-//       {
-//         title: 'Safe setup',
-//         text: (
-//           <>
-//             Not sure how many owners and confirmations you need for your Safe?
-//             <br />
-//             <ExternalLink
-//               href="https://help.safe.global/en/articles/4772567-what-safe-setup-should-i-use"
-//               fontWeight="bold"
-//             >
-//               Learn more about setting up your Safe.
-//             </ExternalLink>
-//           </>
-//         ),
-//       },
-//     ],
-//   },
-//   3: {
-//     title: 'Safe creation',
-//     variant: 'info',
-//     steps: [
-//       {
-//         title: 'Wait for the creation',
-//         text: 'Depending on network usage, it can take some time until the transaction is successfully added to the blockchain and picked up by our services.',
-//       },
-//     ],
-//   },
-//   4: {
-//     title: 'Safe usage',
-//     variant: 'success',
-//     steps: [
-//       {
-//         title: 'Connect your Safe',
-//         text: 'In our Safe Apps section you can connect your Safe to over 70 dApps directly or via Wallet Connect to interact with any application.',
-//       },
-//     ],
-//   },
-// }
+import { Button, Container, Grid } from '@chakra-ui/react'
+import { SetNameStep } from './SetNameStep/indesx'
+import { OwnerPolicyStep } from './OwnerPolicyStep'
+import { ReviewStep } from './ReviewStep'
+import { StatusStep } from './StatusStep'
+import { BaseLayout } from '@components/layout/BaseLayout'
 
 export const CreateWallet: FC = () => {
-  //  const router = useRouter()
-  //   const wallet = us()
-  //   const addressBook = useAddressBook()
-  //   const defaultOwnerAddressBookName = wallet?.address ? addressBook[wallet.address] : undefined
-  //   const defaultOwner: NamedAddress = {
-  //     name: defaultOwnerAddressBookName || wallet?.ens || '',
-  //     address: wallet?.address || '',
-  //   }
-  //   const [safeName, setSafeName] = useState('')
-  //   const [dynamicHint, setDynamicHint] = useState<CreateSafeInfoItem>()
-  //   const [activeStep, setActiveStep] = useState(0)
-  //   const CreateSafeSteps: TxStepperProps<NewSafeFormData>['steps'] = [
-  //     {
-  //       title: 'Connect wallet',
-  //       subtitle: 'The connected wallet will pay the network fees for the Safe creation.',
-  //       render: (data, onSubmit, onBack, setStep) => (
-  //         <ConnectWalletStep data={data} onSubmit={onSubmit} onBack={onBack} setStep={setStep} />
-  //       ),
-  //     },
-  //     {
-  //       title: 'Select network and name your Safe',
-  //       subtitle: 'Select the network on which to create your Safe',
-  //       render: (data, onSubmit, onBack, setStep) => (
-  //         <SetNameStep setSafeName={setSafeName} data={data} onSubmit={onSubmit} onBack={onBack} setStep={setStep} />
-  //       ),
-  //     },
-  //     {
-  //       title: 'Owners and confirmations',
-  //       subtitle: 'Set the owner wallets of your Safe and how many need to confirm to execute a valid transaction.',
-  //       render: (data, onSubmit, onBack, setStep) => (
-  //         <OwnerPolicyStep
-  //           setDynamicHint={setDynamicHint}
-  //           data={data}
-  //           onSubmit={onSubmit}
-  //           onBack={onBack}
-  //           setStep={setStep}
-  //         />
-  //       ),
-  //     },
-  //     {
-  //       title: 'Review',
-  //       subtitle:
-  //         "You're about to create a new Safe and will have to confirm the transaction with your connected wallet.",
-  //       render: (data, onSubmit, onBack, setStep) => (
-  //         <ReviewStep data={data} onSubmit={onSubmit} onBack={onBack} setStep={setStep} />
-  //       ),
-  //     },
-  //     {
-  //       title: '',
-  //       subtitle: '',
-  //       render: (data, onSubmit, onBack, setStep, setProgressColor) => (
-  //         <CreateSafeStatus
-  //           data={data}
-  //           onSubmit={onSubmit}
-  //           onBack={onBack}
-  //           setStep={setStep}
-  //           setProgressColor={setProgressColor}
-  //         />
-  //       ),
-  //     },
-  //   ]
-  //   const staticHint = useMemo(() => staticHints[activeStep], [activeStep])
-  //   const initialData: NewSafeFormData = {
-  //     name: '',
-  //     owners: [defaultOwner],
-  //     threshold: 1,
-  //     saltNonce: Date.now(),
-  //   }
-  //   const onClose = () => {
-  //     router.push(AppRoutes.welcome)
-  //   }
-  //   return (
-  //     <Container>
-  //       <Grid container columnSpacing={3} justifyContent="center" mt={[2, null, 7]}>
-  //         <Grid item xs={12}>
-  //           <Typography variant="h2" pb={2}>
-  //             Create new Safe
-  //           </Typography>
-  //         </Grid>
-  //         <Grid item xs={12} md={8} order={[1, null, 0]}>
-  //           <CardStepper
-  //             initialData={initialData}
-  //             onClose={onClose}
-  //             steps={CreateSafeSteps}
-  //             eventCategory={CREATE_SAFE_CATEGORY}
-  //             setWidgetStep={setActiveStep}
-  //           />
-  //         </Grid>
-  //         <Grid item xs={12} md={4} mb={[3, null, 0]} order={[0, null, 1]}>
-  //           <Grid container spacing={3}>
-  //             {activeStep < 3 && <OverviewWidget safeName={safeName} />}
-  //             {wallet?.address && <CreateSafeInfos staticHint={staticHint} dynamicHint={dynamicHint} />}
-  //           </Grid>
-  //         </Grid>
-  //       </Grid>
-  //     </Container>
+  const [step, setStep] = useState(0)
+
+  const onClick = () => {
+    setStep(step + 1)
+  }
+
+  const StepContent = (step: number) => {
+    switch (step) {
+      case 0:
+        return <SetNameStep />
+      case 1:
+        return <OwnerPolicyStep />
+      case 2:
+        return <ReviewStep />
+      case 3:
+        return <StatusStep />
+    }
+  }
+  return (
+    <div>
+      <BaseLayout>{StepContent(step)}</BaseLayout>
+      <Button onClick={onClick}>Next</Button>
+    </div>
+  )
 }
