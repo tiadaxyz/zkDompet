@@ -1,24 +1,28 @@
-import { NewWallet } from '@components/home/NewWallet'
+import { CreateWallet } from '@components/create'
 import { HomeTopBar } from '@components/home/HomeTopBar'
 import { CenterBody } from '@components/layout/CenterBody'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import type { NextPage } from 'next'
-import 'twin.macro'
 import Head from 'next/head'
+import 'twin.macro'
 
-const HomePage: NextPage = () => {
+const CreatePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>ZK Dumpet</title>
+        <title>Create Wallet</title>
       </Head>
       {/* Top Bar */}
       <HomeTopBar />
 
       <CenterBody tw="mt-20 mb-10 px-5">
-        <NewWallet />
+        {/* Title */}
+
+        {/* Rainbowkit Connect Button */}
+        <CreateWallet />
       </CenterBody>
     </>
   )
 }
 
-export default HomePage
+export default CreatePage

@@ -4,16 +4,16 @@ import tw, { css, GlobalStyles as BaseStyles } from 'twin.macro'
 
 const customStyles = css`
   html {
-    ${tw`scroll-smooth antialiased`}
+    ${tw`antialiased scroll-smooth`}
   }
   body {
-    ${tw`bg-black text-white`}
+    ${tw`text-white bg-black`}
     ${tw`relative h-screen min-h-screen`}
   }
 
   #__next,
   #__next > div {
-    ${tw`relative flex h-full min-h-full flex-col`}
+    ${tw`relative flex flex-col h-full min-h-full`}
   }
 
   /* Progress Bar */
