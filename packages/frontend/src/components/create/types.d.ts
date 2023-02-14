@@ -59,3 +59,13 @@ export interface ReviewStepProps {
   walletData: WalletContextValue
   step: number
 }
+
+export interface StatusStepProps {
+  handleInput: (...arg: any[]) => void
+  walletData: WalletContextValue
+  step: number
+}
+
+export interface SignMessageaProps {
+  password: string
+}
