@@ -37,8 +37,10 @@
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.6.0",
     "sharp": "^0.31.2",
+    "snarkjs": "^0.5.0",
     "use-async-effect": "^2.2.7",
-    "wagmi": "^0.8.5"
+    "wagmi": "^0.8.5",
+    "web3": "^1.8.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",

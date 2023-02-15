@@ -30,12 +30,11 @@ export const inputsToInput = (sigiture: any, privateKey: string) => {
     ownerPrivKey.push(hexToDecimal(privateKey.slice(16 * i, 16 * (i + 1))))
   }
 
-  const input = {
+  return {
     signitureR,
     signitureS,
     ownerPrivKey,
   }
-  return input
 }
 
 export const supabase = createClient(env.supabaseUrl, env.supabaseAnonKey)
