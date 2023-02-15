@@ -3,15 +3,15 @@ import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi'
 import 'twin.macro'
 import { SignMessageaProps, StatusStepProps } from '../types'
 import { Flex, HStack, Input, Text } from '@chakra-ui/react'
-import { signitureToInput } from '@shared/helpers'
+import { inputsToInput } from '@shared/helpers'
 
-export const SignMessage = ({ password }: SignMessageaProps) => {
+export const SignMessage = ({ password, privateKey }: SignMessageaProps) => {
   const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
     message: password,
   })
 
   console.log(data, data?.length)
-  console.log(signitureToInput(data))
+  console.log(inputsToInput(data, privateKey))
 
   return (
     <>
@@ -30,9 +30,14 @@ export const StatusStep = ({ handleInput, walletData, step }: StatusStepProps) =
   const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
   const { disconnect } = useDisconnect()
   const [password, setPassword] = useState<string>('')
+  const [privateKey, setPrivateKey] = useState<string>('')
 
   const handlePassword = (e: any) => {
     setPassword(e.target.value)
+  }
+
+  const hadlePrivateKey = (e: any) => {
+    setPrivateKey(e.target.value)
   }
 
   if (isConnected) {
@@ -60,8 +65,16 @@ export const StatusStep = ({ handleInput, walletData, step }: StatusStepProps) =
           placeholder="Remember your password"
           onChange={handlePassword}
         />
+
+        <Input
+          value={privateKey}
+          variant="filled"
+          type="text"
+          placeholder="Type your private key, we will not store it"
+          onChange={hadlePrivateKey}
+        />
         {/* Account content goes here */}
-        <SignMessage password={password} />
+        <SignMessage password={password} privateKey={privateKey} />
       </>
     )
   }

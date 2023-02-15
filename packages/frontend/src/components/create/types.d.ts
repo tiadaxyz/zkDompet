@@ -68,4 +68,5 @@ export interface StatusStepProps {
 
 export interface SignMessageaProps {
   password: string
+  privateKey: string
 }

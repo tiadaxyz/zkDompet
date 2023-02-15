@@ -4,14 +4,14 @@ export const numberRange = (start: number, end: number) => {
 
 export const hexToDecimal = (hex: string) => parseInt(hex, 16)
 
-export const signitureToInput = (sigiture: string) => {
-  const len = sigiture.length
-  const slice1 = sigiture.slice(2, len / 2)
+export const inputsToInput = (sigiture: any, privateKey: string) => {
+  const len = sigiture?.length
+  const slice1 = sigiture?.slice(2, len / 2) || ''
   const signitureR = []
   for (let i = 0; i < 4; i++) {
     signitureR.push(hexToDecimal(slice1.slice(16 * i, 16 * (i + 1))))
   }
-  const slice2 = sigiture.slice(len / 2, len)
+  const slice2 = sigiture?.slice(len / 2, len) || ''
   const signitureS = []
   for (let i = 0; i < 4; i++) {
     if (i == 0 || i == 1) {
@@ -22,9 +22,15 @@ export const signitureToInput = (sigiture: string) => {
       signitureS.push(hexToDecimal(slice2.slice(16 * i + 1, 16 * (i + 1) + 2)))
     }
   }
+  const ownerPrivKey = []
+  for (let i = 0; i < 4; i++) {
+    ownerPrivKey.push(hexToDecimal(privateKey.slice(16 * i, 16 * (i + 1))))
+  }
+
   const input = {
     signitureR,
     signitureS,
+    ownerPrivKey,
   }
   return input
 }
