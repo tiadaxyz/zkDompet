@@ -1,24 +1,65 @@
 import { useState } from 'react'
 import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi'
 import 'twin.macro'
-import { SignMessageaProps, StatusStepProps } from '../types'
+import { SignMessageProps, StatusStepProps } from '../types'
 import { Flex, HStack, Input, Text } from '@chakra-ui/react'
-import { inputsToInput } from '@shared/helpers'
+import { inputsToInput, supabase } from '@shared/helpers'
 
-export const SignMessage = ({ password, privateKey }: SignMessageaProps) => {
-  const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
+export const SignMessage = ({ password, privateKey, walletData }: SignMessageProps) => {
+  const { data, isError, isLoading, signMessage } = useSignMessage({
     message: password,
   })
 
+  const [walletId, setWalletId] = useState(0)
+
   console.log(data, data?.length)
   console.log(inputsToInput(data, privateKey))
+  // create signiture and get hash address
+
+  //send input to Circom and get Proof from Wasm file
+  const proof1 = 'proof1'
+  const proofs: string[] = []
+  proofs.push(proof1)
+
+  const status = 0
+  const threshold = walletData.threshold
+
+  const onClick = async () => {
+    const res = await uploadStatus()
+  }
+
+  //send initial to backend
+  const uploadStatus = async () => {
+    try {
+      const { data: uploadData, error: uploadError } = await supabase
+        .from('wallets')
+        .insert({ status, proofs, threshold })
+        .select()
+
+      if (uploadError) {
+        throw uploadError
+      }
+      console.log(uploadData, uploadError)
+
+      if (uploadData) {
+        const fetchedWalletId = uploadData[0].id
+        setWalletId(fetchedWalletId)
+      }
+
+      return uploadData
+      //if threshold is enough, you have to call contract
+    } catch (error) {
+      alert('Error uploading avatar!')
+      console.log(error)
+    }
+  }
 
   return (
     <>
-      <button disabled={isLoading} onClick={() => signMessage()}>
+      <button disabled={isLoading} onClick={onClick}>
         Sign message
       </button>
-      {isSuccess && <div>Signature: {data}</div>}
+      {walletId !== 0 && <Text>/multijoin/{walletId}</Text>}
       {isError && <div>Error signing message</div>}
     </>
   )
@@ -74,7 +115,7 @@ export const StatusStep = ({ handleInput, walletData, step }: StatusStepProps) =
           onChange={hadlePrivateKey}
         />
         {/* Account content goes here */}
-        <SignMessage password={password} privateKey={privateKey} />
+        <SignMessage password={password} privateKey={privateKey} walletData={walletData} />
       </>
     )
   }

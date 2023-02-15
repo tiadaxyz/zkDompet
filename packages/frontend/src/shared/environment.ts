@@ -23,4 +23,6 @@ export const env = {
     137: process.env.NEXT_PUBLIC_RPC_137!, // Polygon Mainnet
     80001: process.env.NEXT_PUBLIC_RPC_80001!, // Mumbai
   },
+  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+  supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
 }

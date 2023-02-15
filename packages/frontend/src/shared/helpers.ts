@@ -1,3 +1,6 @@
+import { createClient } from '@supabase/supabase-js'
+import { env } from './environment'
+
 export const numberRange = (start: number, end: number) => {
   return new Array(end - start).fill(null).map((d, i) => i + start)
 }
@@ -34,3 +37,5 @@ export const inputsToInput = (sigiture: any, privateKey: string) => {
   }
   return input
 }
+
+export const supabase = createClient(env.supabaseUrl, env.supabaseAnonKey)
