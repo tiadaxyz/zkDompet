@@ -40,7 +40,7 @@ export const CreateWallet: FC = () => {
       case 2:
         return <ReviewStep handleInput={handleInput} walletData={wallet} step={step} />
       case 3:
-        return <StatusStep />
+        return <StatusStep handleInput={handleInput} walletData={wallet} step={step} />
     }
   }
   return (

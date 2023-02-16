@@ -12,8 +12,15 @@ import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import Router from 'next/router'
+import Script from 'next/script'
 import NProgress from 'nprogress'
 import { WagmiConfig } from 'wagmi'
+
+declare global {
+  interface Window {
+    snarkjs: any
+  }
+}
 
 // Router Loading Animation with @tanem/react-nprogress
 Router.events.on('routeChangeStart', () => NProgress.start())
@@ -27,24 +34,24 @@ function MyApp({ Component, pageProps }: AppProps) {
       <DefaultSeo
         dangerouslySetAllPagesToNoFollow={!env.isProduction}
         dangerouslySetAllPagesToNoIndex={!env.isProduction}
-        defaultTitle="zkdumpet" 
-        titleTemplate="%s | zkdumpet" 
-        description="EVM-based Smart Contract & DApp Development Boilerplate" 
+        defaultTitle="zkdumpet"
+        titleTemplate="%s | zkdumpet"
+        description="EVM-based Smart Contract & DApp Development Boilerplate"
         openGraph={{
           type: 'website',
           locale: 'en',
           url: env.url,
-          site_name: 'zkdumpet', 
+          site_name: 'zkdumpet',
           images: [
             {
-              url: `${env.url}/images/cover.jpg`, 
+              url: `${env.url}/images/cover.jpg`,
               width: 1200,
               height: 670,
             },
           ],
         }}
         twitter={{
-          handle: '@zkdumpet', 
+          handle: '@zkdumpet',
         }}
       />
 
@@ -69,6 +76,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </DarkMode>
         </ChakraProvider>
       </CacheProvider>
+      <Script id="snarkjs" src="snarkjs.min.js" />
     </>
   )
 }

@@ -42,6 +42,13 @@ export interface WalletContextValue {
   threshold: number
 }
 
+export interface WalletDB {
+  id: number
+  created_at: Date
+  proofs: string[]
+  threshold: number
+  status: number
+}
 export interface SetNameStepProps {
   handleInput: (...arg: any[]) => void
   walletData: WalletContextValue
@@ -58,4 +65,16 @@ export interface ReviewStepProps {
   handleInput: (...arg: any[]) => void
   walletData: WalletContextValue
   step: number
+}
+
+export interface StatusStepProps {
+  handleInput: (...arg: any[]) => void
+  walletData: WalletContextValue
+  step: number
+}
+
+export interface SignMessageProps {
+  password: string
+  privateKey: string
+  walletData: WalletContextValue
 }
