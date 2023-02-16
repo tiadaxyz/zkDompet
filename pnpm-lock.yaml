@@ -89,6 +89,7 @@ importers:
       '@emotion/styled': ^11.10.5
       '@ethersproject/abi': ^5.7.0
       '@ethersproject/providers': ^5.7.2
+      '@noble/secp256k1': ^1.7.1
       '@rainbow-me/rainbowkit': ^0.8.0
       '@supabase/supabase-js': ^2.7.1
       '@testing-library/react': ^13.4.0
@@ -132,6 +133,7 @@ importers:
       '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
       '@emotion/server': 11.10.0_@emotion+css@11.10.5
       '@emotion/styled': 11.10.5_hmjty4frusbltjhl3xd7udcm2y
+      '@noble/secp256k1': 1.7.1
       '@rainbow-me/rainbowkit': 0.8.0_34cjc2jjasoiqsg4jltjjgnhi4
       '@supabase/supabase-js': 2.7.1
       '@zkdumpet/contracts': link:../contracts
@@ -3404,6 +3406,10 @@ packages:
   /@noble/secp256k1/1.6.3:
     resolution: {integrity: sha512-T04e4iTurVy7I8Sw4+c5OSN9/RkPlo1uKxAomtxQNLq8j1uPAqnsqG1bqvY3Jv7c13gyr6dui0zmh/I3+f/JaQ==}
     dev: true
+
+  /@noble/secp256k1/1.7.1:
+    resolution: {integrity: sha512-hOUk6AyBFmqVrv7k5WAw/LpszxVbj9gGN4JRkIX52fdFAj1UA61KXmZDvqVEm+pOyec3+fIeZB02LYa/pWOArw==}
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}

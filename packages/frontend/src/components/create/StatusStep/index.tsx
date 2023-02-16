@@ -3,101 +3,28 @@ import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi'
 import 'twin.macro'
 import { SignMessageProps, StatusStepProps } from '../types'
 import { Flex, HStack, Input, Text } from '@chakra-ui/react'
-import { inputsToInput, supabase } from '@shared/helpers'
+import { generateProof, getInputJsonForCircuit, hexToDecimal, supabase } from '@shared/helpers'
 import { hashCircuit, mainCircuit } from '@shared/zkproof'
 
 export const StatusStep = ({ handleInput, walletData, step }: StatusStepProps) => {
+  const Title = 'Follow the step for ZK'
   const { data, isError, isLoading, signMessage } = useSignMessage({
     message: '',
   })
   const { address } = useAccount()
   const [privateKey, setPrivateKey] = useState<string>('')
+  const [msg, seMsg] = useState<string>('')
   const proofs: string[] = []
   const status = 0
   const threshold = walletData.threshold
 
-  //main function logic
-  const handleClick = async () => {
-    // get Signature and PrivateKey
-    //
-    const { signitureR, signitureS, ownerPrivKey } = inputsToInput(data, privateKey)
-    // get hashed address
-    const { wasmFile, zkeyFile, verificationKey } = hashCircuit()
-    const hashEthAddress = getHashAddress(address, wasmFile, zkeyFile)
-    // make one input
-    const inputJson = {
-      signitureR,
-      signitureS,
-      transactionCallData: 'wtf',
-      hashEthAddress,
-      ownerPrivKey,
-    }
-
-    // call main circom
-    const { wasmFile_m, zkeyFile_m, verificationKey_m } = mainCircuit()
-    // get final proof
-    const res = generateProof(inputJson, wasmFile_m, zkeyFile_m)
-    // put them in server
-    const uploadData = serverLogic(res)
-    // if threshold is 1, change status to 1 and call smartcontract
-  }
-
-  // 1. ecdsa-sign -> signitureR, signiture S
-  // const getSignature = async (data: any) => {
-  //  const signature = await ethereum.request({ method: 'eth_sign', params: [accounts[0], messageHash] });
-  // console.log(signature);
-  //   return { proof, publicSignals }
-  // }
-
-  // 2. poseidon hash circuit -> hash(address)
-  const getHashAddress = async (_proofInput: any, _wasm: string, _zkey: string) => {
-    const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
-      _proofInput,
-      _wasm,
-      _zkey,
-    )
-    return { proof, publicSignals }
-  }
-
-  // 3. main circuit : {signitureR, signiture S, transactionCallData, hash(address), privatekey} -> final_proof
-  const generateProof = async (_proofInput: any, _wasm: string, _zkey: string) => {
-    const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
-      _proofInput,
-      _wasm,
-      _zkey,
-    )
-    return { proof, publicSignals }
-  }
-
-  const verifyProof = async (_verificationkey: string, signals: string, proof: string) => {
-    const vkey = await fetch(_verificationkey).then(function (res) {
-      return res.json()
-    })
-
-    const res = await window.snarkjs.groth16.verify(vkey, signals, proof)
-    return res
-  }
-
-  const [walletId, setWalletId] = useState(0)
-
-  console.log(data, data?.length)
-  console.log(inputsToInput(data, privateKey))
-  // create signiture and get hash address
-
-  const serverLogic = async (proof: any) => {
-    proofs.push(proof)
-    const uploadData = await uploadStatus(proofs)
-    return uploadData
-  }
-
-  //send input to Circom and get Proof from Wasm file
-
-  //send initial to backend
-  const uploadStatus = async (proofs: any) => {
+  const uploadServer = async (proofs: any) => {
     try {
+      //send input to Circom and get Proof from Wasm file
+
       const { data: uploadData, error: uploadError } = await supabase
         .from('wallets')
-        .insert({ status, proofs, threshold })
+        .insert({ proofs, threshold, status })
         .select()
 
       if (uploadError) {
@@ -107,7 +34,6 @@ export const StatusStep = ({ handleInput, walletData, step }: StatusStepProps) =
 
       if (uploadData) {
         const fetchedWalletId = uploadData[0].id
-        setWalletId(fetchedWalletId)
       }
 
       return uploadData
@@ -118,18 +44,57 @@ export const StatusStep = ({ handleInput, walletData, step }: StatusStepProps) =
     }
   }
 
-  const hadlePrivateKey = (e: any) => {
+  //main function logic
+  const handleClick = async () => {
+    const { proof, publicSignals } = await getInputJsonForCircuit(privateKey, msg)
+    console.log(proof, publicSignals)
+    // put them in server
+    // const uploadData = res
+    // if (threshold == 1) {
+    // }
+
+    // if threshold is 1, change status to 1 and call smartcontract
+  }
+
+  const handlePrivateKey = (e: any) => {
     setPrivateKey(e.target.value)
   }
+
+  const handleMessage = (e: any) => {
+    seMsg(e.target.value)
+  }
+
   return (
     <>
-      <h1 className="text-3xl font-bold underline text-[red]">Hello world!</h1>
+      <HStack>
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="full"
+          background="white"
+          width="25px"
+          color="black"
+          as="b"
+        >
+          {step + 1}
+        </Flex>
+        <Text as="b">{Title}</Text>
+      </HStack>
+
       <Input
         value={privateKey}
         variant="filled"
         type="text"
         placeholder="Type your private key, we will not store it"
-        onChange={hadlePrivateKey}
+        onChange={handlePrivateKey}
+      />
+
+      <Input
+        value={msg}
+        variant="filled"
+        type="text"
+        placeholder="Message"
+        onChange={handleMessage}
       />
       <button onClick={handleClick}>Submit</button>
     </>
