@@ -5,8 +5,8 @@ import 'twin.macro'
 
 export const HomeTopBar: FC = () => {
   const title = 'ETH KL Mini Hack'
-  const desc = 'ZK Dumpet v0'
-  const href = 'https://inkathon.xyz'
+  const desc = 'ZK Dompet v0'
+  const href = 'https://github.com/lepak0/zkDompet'
 
   return (
     <>

@@ -1,59 +1,53 @@
 import { useState } from 'react'
-import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi'
 import 'twin.macro'
-import { SignMessageProps, StatusStepProps } from '../types'
-import { Flex, HStack, Input, Text } from '@chakra-ui/react'
-import { generateProof, getInputJsonForCircuit, hexToDecimal, supabase } from '@shared/helpers'
-import { hashCircuit, mainCircuit } from '@shared/zkproof'
+import { StatusStepProps } from '../types'
+import {
+  Button,
+  Flex,
+  HStack,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  VStack,
+  useDisclosure,
+} from '@chakra-ui/react'
+import { getInputJsonForCircuit, uploadServer } from '@shared/helpers'
+import { useRouter } from 'next/router'
 
 export const StatusStep = ({ handleInput, walletData, step }: StatusStepProps) => {
   const Title = 'Follow the step for ZK'
-  const { data, isError, isLoading, signMessage } = useSignMessage({
-    message: '',
-  })
-  const { address } = useAccount()
+  // const { data, isError, isLoading, signMessage } = useSignMessage({
+  //   message: '',
+  // })
+  // const { address } = useAccount()
+  const router = useRouter()
   const [privateKey, setPrivateKey] = useState<string>('')
+  const [walletId, setWalletId] = useState<number>(0)
   const [msg, seMsg] = useState<string>('')
-  const proofs: string[] = []
-  const status = 0
-  const threshold = walletData.threshold
+  const [isSuccess, setIsSuccess] = useState<boolean>(false)
 
-  const uploadServer = async (proofs: any) => {
-    try {
-      //send input to Circom and get Proof from Wasm file
-
-      const { data: uploadData, error: uploadError } = await supabase
-        .from('wallets')
-        .insert({ proofs, threshold, status })
-        .select()
-
-      if (uploadError) {
-        throw uploadError
-      }
-      console.log(uploadData, uploadError)
-
-      if (uploadData) {
-        const fetchedWalletId = uploadData[0].id
-      }
-
-      return uploadData
-      //if threshold is enough, you have to call contract
-    } catch (error) {
-      alert('Error uploading avatar!')
-      console.log(error)
-    }
-  }
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   //main function logic
   const handleClick = async () => {
+    onOpen()
     const { proof, publicSignals } = await getInputJsonForCircuit(privateKey, msg)
     console.log(proof, publicSignals)
     // put them in server
-    // const uploadData = res
-    // if (threshold == 1) {
-    // }
-
-    // if threshold is 1, change status to 1 and call smartcontract
+    // const resId = await uploadServer([{ proof, publicSignals }], walletData)
+    // setWalletId(resId)
+    if (walletData.threshold == 1) {
+      const calldata = await window.snarkjs.groth16.exportSolidityCallData(proof, publicSignals)
+      console.log('call smart contract', calldata)
+    }
+    setIsSuccess(true)
+    //   router.push('/wallet/' + resId)
   }
 
   const handlePrivateKey = (e: any) => {
@@ -96,7 +90,34 @@ export const StatusStep = ({ handleInput, walletData, step }: StatusStepProps) =
         placeholder="Message"
         onChange={handleMessage}
       />
-      <button onClick={handleClick}>Submit</button>
+      <VStack>
+        <Button onClick={handleClick}>Submit</Button>
+        {walletId !== 0 && (
+          <Button onClick={() => router.push('/multijoin/' + walletId)}>
+            Send This link To other members
+          </Button>
+        )}
+      </VStack>
+
+      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create your account</ModalHeader>
+
+          <ModalBody pb={6}>
+            <Text>
+              {isSuccess ? 'Done!' : 'Generating Proofs... Do not close the tab until finish'}
+            </Text>
+          </ModalBody>
+          {isSuccess && (
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                OK
+              </Button>
+            </ModalFooter>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   )
 }

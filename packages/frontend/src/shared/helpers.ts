@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import { sign, Point, utils } from '@noble/secp256k1'
 import { env } from './environment'
 import { hashCircuit, mainCircuit } from './zkproof'
+import { WalletContextValue } from '@components/create/types'
 
 export const numberRange = (start: number, end: number) => {
   return new Array(end - start).fill(null).map((d, i) => i + start)
@@ -73,11 +74,11 @@ export const getInputJsonForCircuit = async (privateKey: string, msg: string) =>
   const pub0_array: bigint[] = bigint_to_array(64, 4, pub0)
   const pub1_array: bigint[] = bigint_to_array(64, 4, pub1)
 
-  console.log('signatureR', r_array)
-  console.log('signatureS', s_array)
-  console.log('pubKey', [pub0_array, pub1_array])
-  console.log('signit', [pub0_array, pub1_array])
-  console.log('transactionCallData', msghash_array)
+  // console.log('signatureR', r_array)
+  // console.log('signatureS', s_array)
+  // console.log('pubKey', [pub0_array, pub1_array])
+  // console.log('signit', [pub0_array, pub1_array])
+  // console.log('transactionCallData', msghash_array)
 
   const response = {
     transactionCallData: msghash_array,
@@ -109,6 +110,9 @@ export const getInputJsonForCircuit = async (privateKey: string, msg: string) =>
   const { wasmFile_m, zkeyFile_m, verificationKey_m } = mainCircuit()
   // get final proof
   const res = await generateProof(final_response, wasmFile_m, zkeyFile_m)
+
+  const res1 = await verifyProof(verificationKey_m, res.publicSignals, res.proof)
+  console.log(res1, 'thisisfkingewagew')
   return { proof: res.proof, publicSignals: res.publicSignals }
 }
 
@@ -117,4 +121,86 @@ export const generateProof = async (_proofInput: any, _wasm: string, _zkey: stri
   return { proof, publicSignals }
 }
 
+const verifyProof = async (_verificationkey: string, signals: string, proof: string) => {
+  const vkey = await fetch(_verificationkey).then(function (res) {
+    return res.json()
+  })
+
+  const res = await window.snarkjs.groth16.verify(vkey, signals, proof)
+  return res
+}
+
+//server
 export const supabase = createClient(env.supabaseUrl, env.supabaseAnonKey)
+
+export const uploadServer = async (proofs: any, walletData: WalletContextValue) => {
+  try {
+    //send input to Circom and get Proof from Wasm file
+
+    const { data: uploadData, error: uploadError } = await supabase
+      .from('wallets')
+      .insert({ threshold: walletData.threshold, status: 0, proofs: proofs })
+      .select()
+
+    if (uploadError) {
+      throw uploadError
+    }
+    console.log(uploadData, uploadError)
+
+    return uploadData[0].id
+    //if threshold is enough, you have to call contract
+  } catch (error) {
+    alert('Error uploading avatar!')
+    console.log(error)
+  }
+}
+
+//fetch backend first
+export const fetchWallet = async (walletId: number) => {
+  try {
+    const { data: uploadData, error: uploadError } = await supabase
+      .from('wallets')
+      .select()
+      .eq('id', walletId)
+
+    if (uploadError) {
+      throw uploadError
+    }
+    console.log(uploadData, uploadError)
+
+    return uploadData
+    //if threshold is enough, you have to call contract
+  } catch (error) {
+    alert('Error uploading avatar!')
+    console.log(error)
+  }
+}
+
+//send initial to backend
+export const updateStatus = async (proofs: any, walletId: number) => {
+  try {
+    //send input to Circom and get Proof from Wasm file
+
+    const { data: uploadData, error: uploadError } = await supabase
+      .from('wallets')
+      .update({ proofs })
+      .eq('id', walletId)
+      .select()
+
+    if (uploadError) {
+      throw uploadError
+    }
+    console.log(uploadData, uploadError)
+
+    return uploadData[0].id
+    //if threshold is enough, you have to call contract
+  } catch (error) {
+    alert('Error uploading avatar!')
+    console.log(error)
+  }
+}
+
+// export const getPreTransactionData = () => {
+
+//   return { transactionCallData }
+// }
