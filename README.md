@@ -1,9 +1,10 @@
-This projct was built with the [ETHathon boilerplate](https://github.com/scio-labs/ethathon). Set-up procedures and other information can be found there.
+## ZK Dompet
 
-* About the project
+## About the project
 Be sure to write what inspired you, what you learned, how you built your project, and the challenges you faced. Format your story in Markdown.
-## Inspiration
 
+## Inspiration
+This project is inspired by Gnosis Safe where multiple people can make a single wallet where we call it Multisig. But a multisig wallet can be trace back to the user itself by 
 
 ## What it does
 
