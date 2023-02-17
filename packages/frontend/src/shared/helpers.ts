@@ -113,7 +113,7 @@ export const getInputJsonForCircuit = async (privateKey: string, msg: string) =>
 
   const res1 = await verifyProof(verificationKey_m, res.publicSignals, res.proof)
   console.log(res1, 'thisisfkingewagew')
-  return { proof: res.proof, publicSignals: res.publicSignals }
+  return { proof: res.proof, publicSignals: res.publicSignals, input: { ...final_response } }
 }
 
 export const generateProof = async (_proofInput: any, _wasm: string, _zkey: string) => {
@@ -139,7 +139,7 @@ export const uploadServer = async (proofs: any, walletData: WalletContextValue) 
 
     const { data: uploadData, error: uploadError } = await supabase
       .from('wallets')
-      .insert({ threshold: walletData.threshold, status: 0, proofs: proofs })
+      .insert({ threshold: walletData.threshold, status: 0, proofs: proofs, name: walletData.name })
       .select()
 
     if (uploadError) {
@@ -168,7 +168,7 @@ export const fetchWallet = async (walletId: number) => {
     }
     console.log(uploadData, uploadError)
 
-    return uploadData
+    return uploadData[0]
     //if threshold is enough, you have to call contract
   } catch (error) {
     alert('Error uploading avatar!')

@@ -31,4 +31,16 @@ export const env = {
     alchemyApiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
     polygonScan: process.env.NEXT_PUBLIC_POLYGONSCAN_API_KEY,
   },
+
+  contract: {
+    multisig: process.env.NEXT_PUBLIC_MULTISIG_CONTRACT || '',
+    forwarder: process.env.NEXT_PUBLIC_MINIMALFORWARDER_CONTRACT || '',
+    factory: process.env.NEXT_PUBLIC_FACTORY_CONTRACT || '',
+    factoryOwner: process.env.NEXT_PUBLIC_FACTORYOWNER_CONTRACT || '',
+    relayer: process.env.NEXT_PUBLIC_RELAYER_CONTRACT || '',
+  },
+  autotask: {
+    apiKey: process.env.NEXT_PUBLIC_TEAM_API_KEY || '',
+    apiSecret: process.env.NEXT_PUBLIC_TEAM_API_SECRET || '',
+  },
 }
