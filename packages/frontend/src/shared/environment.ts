@@ -25,4 +25,10 @@ export const env = {
   },
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+  mumbai: {
+    relayerApiKey: process.env.NEXT_PUBLIC_RELAYER_API_KEY,
+    relayerSecretApiKey: process.env.NEXT_PUBLIC_RELAYER_SECRET_API_KEY,
+    alchemyApiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
+    polygonScan: process.env.NEXT_PUBLIC_POLYGONSCAN_API_KEY,
+  },
 }
