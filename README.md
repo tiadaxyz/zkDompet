@@ -1,6 +1,12 @@
 ## ZK Dompet
 
 # About the project
+# Contracts deployed
+relayer: 0x446008101d998584837e01c3bbc0d3055e37b189
+factory owner: 0x264dABD1fbF0da59Cb22E0B4b6146aA26dA669BF
+factory: 0xAaA2F4E5eEAD0b3adf1beC7a1C64D22719B8dbD8
+multiSig #1: 0xa611EEE4c541CC8B64644C515203AcE64D5b3186
+MinimalForwarder": "0xC32D8793ef43238878171fa83e1A975b1ffb5173"
 
 ## Inspiration
 This project is inspired by Gnosis Safe where multiple participants or entities can have joint ownership of a single Ethereum wallet. However, the current implementation of Gnosis Safe is not anonymous. The wallet address is linked to the Ethereum address of the participants. Hence, the privacy of the participants is compromised. 
