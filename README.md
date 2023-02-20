@@ -1,13 +1,6 @@
 ## ZK Dompet
 
 # About the project
-# Contracts deployed
-relayer: 0x446008101d998584837e01c3bbc0d3055e37b189
-factory owner: 0x264dABD1fbF0da59Cb22E0B4b6146aA26dA669BF
-factory: 0xAaA2F4E5eEAD0b3adf1beC7a1C64D22719B8dbD8
-multiSig #1: 0xa611EEE4c541CC8B64644C515203AcE64D5b3186
-MinimalForwarder": "0xC32D8793ef43238878171fa83e1A975b1ffb5173"
-
 ## Inspiration
 This project is inspired by Gnosis Safe where multiple participants or entities can have joint ownership of a single Ethereum wallet. However, the current implementation of Gnosis Safe is not anonymous. The wallet address is linked to the Ethereum address of the participants. Hence, the privacy of the participants is compromised. 
 
@@ -15,6 +8,21 @@ This project is inspired by Gnosis Safe where multiple participants or entities 
 ZKDompet basically allows creation of a multi-signature wallet with the following features:
 - The wallet address is not linked to owners of the wallet
 - The wallet enforces each participant provide a Zero Knowledge Proof (ZKP) of their identity before they can submit a transaction which will be relayed to the multi-signature wallet.
+
+## Deployments
+### Mumbai Testnet
+Full details of the contracts deployed on Mumbai Testnet can be found here:
+- Video demo: https://www.youtube.com/watch?v=NSCPcEv5gEw
+- Open Zeppelin Relayer: https://mumbai.polygonscan.com/address/0x446008101d998584837e01c3bbc0d3055e37b189
+- factory owner: https://mumbai.polygonscan.com/address/0x264dABD1fbF0da59Cb22E0B4b6146aA26dA669BF
+- factory: https://mumbai.polygonscan.com/address/0xAaA2F4E5eEAD0b3adf1beC7a1C64D22719B8dbD8
+- multiSig #1: https://mumbai.polygonscan.com/address/0xa611EEE4c541CC8B64644C515203AcE64D5b3186
+- MinimalForwarder": https://mumbai.polygonscan.com/address/0xC32D8793ef43238878171fa83e1A975b1ffb5173
+### Scroll Prealpha L2
+As there is no support for Scroll testnet relayer on OpenZeppelin Defender, we have deployed the MultiSig wallet directly without the relayer on Scroll Testnet L2. We have tested transaction execution on the MultiSig wallet whereby it checks the ZKP of the sender before executing the transaction to the recipient wallet.
+- Video demo: https://www.youtube.com/watch?v=4hGZzHYNp60
+- multiSig #1: https://l2scan.scroll.io/address/0x1EE9751F853C6D1Ed0D1f9766fc9c2D3441A9B70 
+- Transaction executed on MultiSig #1: https://l2scan.scroll.io/tx/0xbeb5e0028393221c26930b4c39423db68d56c627a2dc03efd387d709c6e1c1fe
 
 ## How we built it
 Overall flow goes:
